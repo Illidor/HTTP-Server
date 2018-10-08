@@ -113,12 +113,14 @@ namespace HTTP_Server
         public void Post(NetworkStream stream)
 		{
 			StreamWriter writer = new StreamWriter(stream);
-            string response = String.Format("{0} {1}\r\nServer: {2}\r\nContent-Type: {3}\r\nAccept-Ranges: bytes\r\nContent-Lenght: {4}\r\n",
+            string response = String.Format("{0} {1}\r\nServer: {2}\r\nContent-Type: {3}\r\nAccept-Ranges: bytes\r\nContent-Lenght: {4}\r\n\r\n",
                 HTTP_Server.VERSION, status, HTTP_Server.NAME, mime, data.Length);
+
+            byte[] responsebytes = Encoding.ASCII.GetBytes(response);
 
             Console.WriteLine(response);
             writer.WriteLine(response);
-
+            stream.Write(responsebytes, 0, response.Length);
             //Alternative zur oberen Zeile?
             //writer.Flush(String.Format("{0} {1}\r\nServer: {2}\r\nContent-Type: {3}\r\nAccept-Ranges: bytes\r\nContent-Lenght: {4}\r\n",
             //HTTP_Server.VERSION, status, HTTP_Server.NAME, mime, data.Length));
